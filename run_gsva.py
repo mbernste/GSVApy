@@ -42,16 +42,27 @@ def run_GSVA(df_counts, gene_set_to_genes):
     return df_res
 
 
+def _parse_gene_sets(gene_sets_f):
+    gene_set_to_genes = {}
+    with open(gene_sets_f, 'r') as f:
+        for l in f:
+            toks = l.split('\t')
+            gene_set = toks[0]
+            genes = toks[2:]
+            gene_set_to_genes[gene_set] = genes
+    return gene_set_to_genes
+
 def main():
 
     #cells = ['PJ016_4', 'PJ016_5', 'PJ016_6']
     #counts = load_GSE103224.counts_matrix_for_cells(cells)
 
     data_f = sys.argv[1]
+    gene_sets_f = sys.argv[2]
+    gene_set_to_genes = _parse_gene_sets(gene_sets_f)
+
     df = pd.read_csv(data_f, sep='\t', index_col=0)
     df = df.transpose()
-    with open('gene_set_to_genes.json', 'r') as f:
-        gene_set_to_genes = json.load(f)
     run_GSVA(df, gene_set_to_genes)
 
 
