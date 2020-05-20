@@ -1,3 +1,7 @@
+##############################################################################
+#   Given a TSV file of expression data, run the GSVA algorithm
+##############################################################################
+
 import json
 import numpy as np
 import pandas as pd
@@ -53,10 +57,6 @@ def _parse_gene_sets(gene_sets_f):
     return gene_set_to_genes
 
 def main():
-
-    #cells = ['PJ016_4', 'PJ016_5', 'PJ016_6']
-    #counts = load_GSE103224.counts_matrix_for_cells(cells)
-
     data_f = sys.argv[1]
     gene_sets_f = sys.argv[2]
     gene_set_to_genes = _parse_gene_sets(gene_sets_f)
