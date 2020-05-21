@@ -2,6 +2,7 @@
 #   Given a TSV file of expression data, run the GSVA algorithm
 ##############################################################################
 
+from optparse import OptionParser
 import json
 import numpy as np
 import pandas as pd
@@ -29,11 +30,7 @@ def run_GSVA(df_counts, gene_set_to_genes):
             cts <- as.matrix(counts)
             rownames(cts) <- unlist(genes)
             colnames(cts) <- colnames(counts)
-            #print(gs)
-            #print(sessionInfo())
             res <- gsva(cts, gs, kcdf="Poisson")
-            print(res)
-            print(rownames(res))
             df <- data.frame(res)
             df
         }
@@ -56,15 +53,26 @@ def _parse_gene_sets(gene_sets_f):
             gene_set_to_genes[gene_set] = genes
     return gene_set_to_genes
 
+
 def main():
-    data_f = sys.argv[1]
-    gene_sets_f = sys.argv[2]
+    usage = "" # TODO
+    parser = OptionParser(usage=usage)
+    parser.add_option("-t", "--transpose", action="store_true", help="Take transpose of input")
+    parser.add_option("-o", "--out_file", help="Output file")
+    (options, args) = parser.parse_args()
+
+    data_f = args[0]
+    gene_sets_f = args[1]
+    out_f = options.out_file
+
     gene_set_to_genes = _parse_gene_sets(gene_sets_f)
 
     df = pd.read_csv(data_f, sep='\t', index_col=0)
-    df = df.transpose()
-    run_GSVA(df, gene_set_to_genes)
+    if options.transpose:
+        df = df.transpose()
 
+    res_df = run_GSVA(df, gene_set_to_genes)
+    res_df.to_csv(out_f, sep='\t')
 
 if __name__ == "__main__":
     main()
