@@ -82,7 +82,7 @@ def _parse_gene_sets(gene_sets_f):
 
 
 def main():
-    usage = "python run_gsva.py <input>" # TODO
+    usage = "python run_gsva.py <input_expression_data> <input_GMT_gene_set_file>"
     parser = OptionParser(usage=usage)
     parser.add_option("-t", "--transpose", action="store_true", help="Take transpose of input")
     parser.add_option("-d", "--distribution", help="Distribution to use in GSVA {'Poisson' or 'Gaussian'}")

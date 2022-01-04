@@ -21,7 +21,7 @@ I recommend installing these packages in a conda virtual environment. I have fou
 The `run_gsva.py` script can be run on the command as follow:
 
 ```
-Usage: python run_gsva.py <input>
+Usage: python run_gsva.py <input_expression_data> <input_GMT_gene_set_file>
 
 Options:
   -h, --help            show this help message and exit
